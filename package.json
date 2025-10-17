@@ -1,0 +1,80 @@
+{
+    "name": "drizzle-with",
+    "version": "1.0.3",
+    "description": "Query building tool for the Drizzle ORM",
+    "type": "module",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/the-content/drizzle-with",
+        "directory": "."
+    },
+    "keywords": [
+        "drizzle-orm",
+        "drizzle",
+        "orm",
+        "pagination",
+        "sorting",
+        "counts",
+        "filters",
+        "transactions",
+        "mysql",
+        "postgresql",
+        "pg",
+        "soft-delete",
+        "typescript",
+        "query-builder",
+        "tanstack-table"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "sideEffects": false,
+    "scripts": {
+        "build": "tsdown",
+        "format": "prettier --write ."
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "import": {
+                "default": "./dist/index.js",
+                "types": "./dist/index.d.ts"
+            },
+            "require": {
+                "default": "./dist/index.cjs",
+                "types": "./dist/index.d.cts"
+            }
+        },
+        "./postgres": {
+            "import": {
+                "default": "./dist/withs/postgres/index.js",
+                "types": "./dist/withs/postgres/index.d.ts"
+            },
+            "require": {
+                "default": "./dist/withs/postgres/index.cjs",
+                "types": "./dist/withs/postgres/index.d.cts"
+            }
+        },
+        "./mysql": {
+            "import": {
+                "default": "./dist/withs/mysql/index.js",
+                "types": "./dist/withs/mysql/index.d.ts"
+            },
+            "require": {
+                "default": "./dist/withs/mysql/index.cjs",
+                "types": "./dist/withs/mysql/index.d.cts"
+            }
+        }
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "drizzle-orm": "^0.44.6",
+        "prettier": "^3.6.2",
+        "tsdown": "^0.15.7"
+    },
+    "files": [
+        "dist"
+    ]
+}
