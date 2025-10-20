@@ -1,4 +1,4 @@
-import { sql, type Column } from 'drizzle-orm'
+import { sql, type Column } from 'drizzle-orm';
 
 /**
  * 列转小写 / Convert column to lowercase
@@ -9,7 +9,7 @@ import { sql, type Column } from 'drizzle-orm'
  * //sql -> select * from "users" where lower(email) = 'john@email.com';
  * ```
  */
-export const lower = (column: Column) => sql`lower(${column})`
+export const lower = (column: Column) => sql`lower(${column})`;
 
 /**
  * 蛇形命名转小驼峰 / Convert snake_case to camelCase
@@ -21,10 +21,10 @@ export const lower = (column: Column) => sql`lower(${column})`
  * ```
  */
 export const snakeToCamel = (str: string) => {
-    return str.replace(/_(\w)/g, function (all, letter) {
-        return letter.toUpperCase()
-    })
-}
+    return str.replace(/_(\w)/g, function (_, letter) {
+        return letter.toUpperCase();
+    });
+};
 
 /**
  * 驼峰转蛇形 / Convert camelCase to snake_case
@@ -36,7 +36,7 @@ export const snakeToCamel = (str: string) => {
  * ```
  */
 export const camelToSnake = (str: string) => {
-    return str.replace(/[A-Z]/g, function (all, letter) {
-        return '_' + letter.toLowerCase()
-    })
-}
+    return str.replace(/[A-Z]/g, function (letter) {
+        return '_' + letter.toLowerCase();
+    });
+};

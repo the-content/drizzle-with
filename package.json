@@ -1,6 +1,6 @@
 {
     "name": "drizzle-with",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "description": "Query building tool for the Drizzle ORM",
     "type": "module",
     "license": "MIT",
@@ -32,6 +32,7 @@
     "sideEffects": false,
     "scripts": {
         "build": "tsdown",
+        "test": "vitest",
         "format": "prettier --write ."
     },
     "main": "./dist/index.js",
@@ -72,7 +73,8 @@
         "@types/bun": "latest",
         "drizzle-orm": "^0.44.6",
         "prettier": "^3.6.2",
-        "tsdown": "^0.15.7"
+        "tsdown": "^0.15.7",
+        "vitest": "^3.2.4"
     },
     "files": [
         "dist"

@@ -1,13 +1,13 @@
-import type { AnyColumn, SQL } from 'drizzle-orm'
-import type { Qb } from 'src/types/base'
-import { asc, desc } from 'drizzle-orm'
-import { snakeToCamel } from '../utils'
+import type { AnyColumn, SQL } from 'drizzle-orm';
+import type { Qb } from 'src/types/base';
+import { asc, desc } from 'drizzle-orm';
+import { camelToSnake, snakeToCamel } from '../utils';
 
 export interface SortingOption {
     /** 字段 / Field */
-    id: string
+    id: string;
     /** 是否倒叙 / Whether to sort in descending order */
-    desc: boolean
+    desc: boolean;
 }
 
 /**
@@ -20,21 +20,22 @@ export interface SortingOption {
  * ```
  */
 export const withSorting = (qb: Qb, options?: SortingOption[]) => {
-    const orders: SQL[] = []
+    const orders: SQL[] = [];
 
-    if (!options || options.length === 0) return orders
+    if (!options || options.length === 0) return orders;
 
     options.forEach(({ id, desc: isDesc }) => {
-        // id可能是蛇形下划线命名，把字段转为小驼峰
-        const camelCaseId = snakeToCamel(id)
+        // id可能是蛇形下划线命名或者驼峰命名
+        const camelId = camelToSnake(id);
+        const snakeId = snakeToCamel(id);
         // 检查字段是否存在于 schema 中
-        const column = qb._.config.fields[camelCaseId] as AnyColumn
-        if (!column) return
+        const column = (qb._.config.fields[camelId] ?? qb._.config.fields[snakeId]) as AnyColumn;
+        if (!column) return;
 
-        const orderSql = isDesc ? desc(column) : asc(column)
-        orders.push(orderSql)
-    })
+        const orderSql = isDesc ? desc(column) : asc(column);
+        orders.push(orderSql);
+    });
     // 使用类型断言来解决联合类型的orderBy签名不兼容问题
-    ;(qb as any).orderBy(...orders)
-    return orders
-}
+    (qb as any).orderBy(...orders);
+    return orders;
+};

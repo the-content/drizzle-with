@@ -9,7 +9,7 @@ export default defineConfig({
         './src/withs/postgres/index.ts', 
         './src/withs/mysql/index.ts'
     ],
-    external: ['drizzle-orm', 'prettier'],
+    external: ['drizzle-orm', 'vitest', 'prettier'],
     dts: true,
     treeshake: true
 })
