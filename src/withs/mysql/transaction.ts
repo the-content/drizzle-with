@@ -6,6 +6,8 @@ type TransactionFn<T, TSchema extends Record<string, unknown>> = (
     tx: MySqlTransaction<MySql2QueryResultHKT, MySql2PreparedQueryHKT, TSchema, ExtractTablesWithRelations<TSchema>>,
 ) => Promise<T>
 
+type TransactionResult<T> = [string | undefined, Awaited<T>]
+
 /**
  * 事务读写 / Transaction read/write
  * @param db - 数据库实例 / Database instance
@@ -13,9 +15,9 @@ type TransactionFn<T, TSchema extends Record<string, unknown>> = (
  * @param config - 事务配置 / Transaction configuration
  * @example
  * ```ts
- * const { data, error } = withTransaction(db, async (tx) => {
+ * const [error, data] = await withTransaction(async (tx) => {
  *      const [user] = await tx.select().from(users).where(eq(users.id, 1))
- *      if(user){
+ *      if(user) {
  *          throw new Error('user exists')
  *      }
  *      const returning = await tx.update(users).set({ name: 'John' }).where(eq(users.id, 1)).returning({ id: users.id });
@@ -24,14 +26,14 @@ type TransactionFn<T, TSchema extends Record<string, unknown>> = (
  * if(error){
  *    console.log(error) // user exists
  * }
- * console.log(data) // { id: 1 }
+ * console.log(data) // 1
  * ```
  */
 export const withTransaction = async <T, TSchema extends Record<string, unknown>>(
     db: MySql2Database<TSchema> & { $client: MySql2Client },
     fn: TransactionFn<T, TSchema>,
     config: Partial<MySqlTransactionConfig> = {},
-): Promise<{ data?: T; error?: string }> => {
+): Promise<TransactionResult<T>> => {
     const defaultConfig: MySqlTransactionConfig = {
         isolationLevel: 'repeatable read',
         accessMode: 'read write',
@@ -39,9 +41,10 @@ export const withTransaction = async <T, TSchema extends Record<string, unknown>
     }
     const mergeConfig = { ...defaultConfig, ...config }
     try {
-        const result = await db.transaction(async (tx) => await fn(tx), { ...mergeConfig })
-        return { data: result }
-    } catch (error: any) {
-        return { error: error?.message || error }
+        const data = await db.transaction(async (tx) => await fn(tx), { ...mergeConfig })
+        return [undefined, data]
+    } catch (err: any) {
+        const error = (err as Error).message
+        return [error, undefined as unknown as Awaited<T>]
     }
 }

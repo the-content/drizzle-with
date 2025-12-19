@@ -200,7 +200,7 @@ import { db } from './db';
 import { users } from './schema';
 import { withTransaction } from 'drizzle-with/mysql';
 
-const { data, error } = await withTransaction(db, async (tx) => {
+const [error, data] = await withTransaction(db, async (tx) => {
     const [user] = await tx.select().from(users).where(eq(users.id, 1));
     if (user) {
         throw new Error('User already exists');

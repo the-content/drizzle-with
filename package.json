@@ -1,42 +1,25 @@
 {
     "name": "drizzle-with",
-    "version": "1.0.5",
-    "description": "Query building tool for the Drizzle ORM",
+    "version": "1.1.0",
     "type": "module",
-    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/the-content/drizzle-with",
         "directory": "."
     },
-    "keywords": [
-        "drizzle-orm",
-        "drizzle",
-        "orm",
-        "pagination",
-        "sorting",
-        "counts",
-        "filters",
-        "transactions",
-        "mysql",
-        "postgresql",
-        "pg",
-        "soft-delete",
-        "typescript",
-        "query-builder",
-        "tanstack-table"
-    ],
-    "publishConfig": {
-        "access": "public"
-    },
-    "sideEffects": false,
     "scripts": {
         "build": "tsdown",
         "test": "vitest",
         "format": "prettier --write ."
     },
-    "main": "./dist/index.js",
+    "main": "./dist/index.cjs",
     "module": "./dist/index.js",
+    "devDependencies": {
+        "@types/bun": "latest",
+        "prettier": "^3.6.2",
+        "tsdown": "^0.15.7",
+        "vitest": "^3.2.4"
+    },
     "exports": {
         ".": {
             "import": {
@@ -69,14 +52,35 @@
             }
         }
     },
-    "devDependencies": {
-        "@types/bun": "latest",
-        "drizzle-orm": "^0.44.6",
-        "prettier": "^3.6.2",
-        "tsdown": "^0.15.7",
-        "vitest": "^3.2.4"
-    },
+    "description": "Query building tool for the Drizzle ORM",
     "files": [
-        "dist"
-    ]
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "keywords": [
+        "drizzle-orm",
+        "drizzle",
+        "orm",
+        "pagination",
+        "sorting",
+        "counts",
+        "filters",
+        "transactions",
+        "mysql",
+        "postgresql",
+        "pg",
+        "soft-delete",
+        "typescript",
+        "query-builder",
+        "tanstack-table"
+    ],
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "sideEffects": false,
+    "peerDependencies": {
+        "drizzle-orm": "^0.45.0"
+    }
 }

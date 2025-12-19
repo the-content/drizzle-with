@@ -81,7 +81,10 @@ export const withAutoFilters = (qb: Qb, values: Record<string, any>, overrides?:
     // 将overrides的键也转换为snake_case
     const snakeOverrides: Record<string, FilterOps> = {};
     for (const key in overrides) {
-        snakeOverrides[camelToSnake(key)] = overrides[key];
+        const overrideValue = overrides[key];
+        if (overrideValue) {
+            snakeOverrides[camelToSnake(key)] = overrideValue;
+        }
     }
     for (const column in columns) {
         const snakeColumn = camelToSnake(column);
